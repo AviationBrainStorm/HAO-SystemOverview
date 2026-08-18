@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>HAO Navigator — Higher Airspace Operations knowledge explorer (shared build)</title>
+<link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-mark" aria-hidden="true">HAO</div>
+    <div class="brand-text">
+      <h1>HAO Navigator <span class="ro-badge">Read-only</span></h1>
+      <p id="datasetTitle">Higher Airspace Operations — scenario, provision and dependency explorer</p>
+    </div>
+  </div>
+  <div class="topbar-actions">
+    <button class="btn btn-ghost" id="btnExport" title="Download the current dataset as JSON">Export</button>
+    <button class="btn btn-theme" id="themeToggle" aria-label="Toggle dark and light mode">
+      <span class="theme-icon" id="themeIcon">◐</span><span id="themeLabel">Dark</span>
+    </button>
+  </div>
+</header>
+
+<nav class="tabbar" role="tablist">
+  <button class="tab active" data-view="explorer" role="tab">Scenario explorer</button>
+  <button class="tab" data-view="planview" role="tab">Plan view &amp; cross-FIR</button>
+  <button class="tab" data-view="gaps" role="tab">ICAO provisions &amp; gaps</button>
+  <button class="tab" data-view="roadmap" role="tab">Job cards &amp; delivery</button>
+  <button class="tab" data-view="heat" role="tab">Expert group heat map</button>
+  <button class="tab" data-view="ganp" role="tab">GANP / GATMOC alignment</button>
+  <button class="tab" data-view="ontology" role="tab">Ontology (BFO)</button>
+  <button class="tab" data-view="taxonomy" role="tab">Taxonomy</button>
+  <button class="tab" data-view="about" role="tab">About &amp; schemas</button>
+</nav>
+
+<!-- ======================= SCENARIO EXPLORER ======================= -->
+<main id="view-explorer" class="view active">
+  <aside class="rail rail-left">
+    <section class="panel">
+      <h2>1 · Vehicle class</h2>
+      <div id="vehicleList" class="chip-stack"></div>
+    </section>
+    <section class="panel">
+      <h2>2 · Design phase</h2>
+      <div id="phaseList" class="chip-stack"></div>
+    </section>
+    <section class="panel">
+      <h2>3 · Scenario</h2>
+      <div id="scenarioList" class="scenario-list"></div>
+    </section>
+    <section class="panel">
+      <h2>Filter by use case</h2>
+      <div id="useCaseFilter" class="chip-stack chip-stack-wrap"></div>
+    </section>
+  </aside>
+
+  <section class="stage">
+    <div class="stage-head">
+      <div>
+        <h2 id="scenarioTitle">Select a scenario</h2>
+        <p id="scenarioSub" class="muted"></p>
+      </div>
+      <div class="stage-legend" id="stageLegend"></div>
+    </div>
+
+    <div class="chart-wrap">
+      <svg id="flightChart" role="img" aria-label="Design flight path against altitude and other traffic"></svg>
+      <div id="chartTip" class="chart-tip" hidden></div>
+    </div>
+
+    <p id="scenarioNarrative" class="narrative"></p>
+
+    <div class="stage-foot">
+      <div class="kpi" id="kpiGaps"><span class="kpi-n">–</span><span class="kpi-l">provision gaps</span></div>
+      <div class="kpi" id="kpiSeverity"><span class="kpi-n">–</span><span class="kpi-l">max gap severity</span></div>
+      <div class="kpi" id="kpiGroups"><span class="kpi-n">–</span><span class="kpi-l">expert groups at level 4–5</span></div>
+      <div class="kpi" id="kpiServices"><span class="kpi-n">–</span><span class="kpi-l">services required</span></div>
+    </div>
+  </section>
+
+  <aside class="rail rail-right">
+    <section class="panel">
+      <h2>ATS interaction</h2>
+      <div id="atsBox"></div>
+    </section>
+    <section class="panel">
+      <h2>Services provided</h2>
+      <div id="servicesBox" class="chip-stack chip-stack-wrap"></div>
+    </section>
+    <section class="panel">
+      <h2>Communication · Navigation · Surveillance</h2>
+      <div id="cnsBox"></div>
+    </section>
+    <section class="panel">
+      <h2>Equipage requirements</h2>
+      <ul id="equipageBox" class="tight-list"></ul>
+    </section>
+    <section class="panel">
+      <h2>Information requirements</h2>
+      <ul id="infoBox" class="tight-list"></ul>
+    </section>
+    <section class="panel">
+      <h2>Provision gaps in this scenario</h2>
+      <div id="gapMini"></div>
+    </section>
+  </aside>
+</main>
+
+
+<!-- ======================= PLAN VIEW ======================= -->
+<main id="view-planview" class="view">
+  <aside class="rail rail-left">
+    <section class="panel">
+      <h2>Scenario</h2>
+      <div id="pvScenarioList" class="scenario-list"></div>
+    </section>
+    <section class="panel">
+      <h2>Display</h2>
+      <label class="switch"><input type="checkbox" id="pvShowFIR" checked /> <span>Show FIR / sovereign regions</span></label>
+      <label class="switch" style="margin-top:.4rem"><input type="checkbox" id="pvWorld" /> <span>Whole-world extent</span></label>
+    </section>
+    <section class="panel">
+      <h2>Track altitude key</h2>
+      <div id="pvLegend" class="chip-stack"></div>
+    </section>
+  </aside>
+
+  <section class="stage">
+    <div class="stage-head">
+      <div>
+        <h2 id="pvTitle">Plan view</h2>
+        <p id="pvSub" class="muted"></p>
+      </div>
+    </div>
+    <div class="chart-wrap">
+      <svg id="planChart" role="img" aria-label="Geographic plan view of the ground track and FIR crossings"></svg>
+      <div id="planTip" class="chart-tip" hidden></div>
+    </div>
+    <p class="narrative" id="pvNote"></p>
+  </section>
+
+  <aside class="rail rail-right">
+    <section class="panel">
+      <h2>Jurisdictional footprint</h2>
+      <div id="pvJurisdiction"></div>
+    </section>
+    <section class="panel">
+      <h2>Why this matters</h2>
+      <p class="muted">A HAO track is a regulatory problem only in combination with its altitude. The same ground position may sit inside ATC-managed airspace at FL550 and outside it at FL620, so the track here is coloured by flight level rather than by operator.</p>
+    </section>
+  </aside>
+</main>
+
+<!-- ======================= GAPS ======================= -->
+<section id="view-gaps" class="view view-doc">
+  <div class="doc-head">
+    <h2>Where HAO will require changes to existing ICAO provisions</h2>
+    <p class="muted">Severity is a 0–5 judgement of how far the requirement is from being met by an existing provision. Filter by the scenario selected in the explorer, or view all.</p>
+    <div class="inline-controls">
+      <label class="switch"><input type="checkbox" id="gapScopeToggle" /> <span>Only gaps touching the selected scenario</span></label>
+      <select id="gapSort">
+        <option value="severity">Sort by severity</option>
+        <option value="instrument">Sort by instrument</option>
+        <option value="frequency">Sort by number of scenarios affected</option>
+      </select>
+    </div>
+  </div>
+  <div id="gapTable"></div>
+</section>
+
+
+<!-- ======================= ROADMAP ======================= -->
+<section id="view-roadmap" class="view view-doc">
+  <div class="doc-head">
+    <h2>Job cards, delivery dates and gap coverage</h2>
+    <p class="muted">Work programme elements use the ICAO Delivery / Effective / Applicability triple. Bars run from delivery to applicability where both are given.</p>
+    <div class="inline-controls">
+      <select id="rmGroupFilter"><option value="">All expert groups</option></select>
+      <label class="switch"><input type="checkbox" id="rmOnlyUncovered" /> <span>Coverage table: show only uncovered gaps</span></label>
+    </div>
+  </div>
+  <div id="roadmapGantt" class="rm-wrap"></div>
+  <div id="jcDetail" class="heat-detail"></div>
+  <div class="doc-head" style="margin-top:2rem"><h3>Gap coverage by the work programme</h3>
+    <p class="muted">Coverage is graded: <strong>resolving</strong> means a job card output would change the provision; <strong>partial</strong> means work exists but does not span the gap; <strong>framing</strong> means the gap is scoped conceptually but no provision changes as a result.</p>
+  </div>
+  <div id="coverageTable"></div>
+</section>
+
+<!-- ======================= HEAT MAP ======================= -->
+<section id="view-heat" class="view view-doc">
+  <div class="doc-head">
+    <h2>Dependency of HAO on the work of ICAO expert groups</h2>
+    <p class="muted">Each cell is the dependency of a scenario on a group's work, 0 (none) to 5 (blocking). Click a column header to read the group's role; click a row to jump to that scenario.</p>
+    <div class="inline-controls">
+      <select id="heatFilterVehicle"><option value="">All vehicle classes</option></select>
+      <select id="heatFilterUseCase"><option value="">All use cases</option></select>
+      <label class="switch"><input type="checkbox" id="heatSortByLoad" checked /> <span>Order groups by total dependency</span></label>
+    </div>
+  </div>
+  <div id="heatMap" class="heat-scroll"></div>
+  <div id="heatDetail" class="heat-detail"></div>
+</section>
+
+<!-- ======================= GANP / GATMOC ======================= -->
+<section id="view-ganp" class="view view-doc">
+  <div class="doc-head">
+    <h2>How HAO relates to the GANP and the GATMOC</h2>
+    <p class="muted" id="visionQuote"></p>
+  </div>
+  <div class="ganp-grid" id="ganpGrid"></div>
+</section>
+
+<!-- ======================= ONTOLOGY ======================= -->
+<section id="view-ontology" class="view view-doc">
+  <div class="doc-head">
+    <h2>HAO ontology grounded in the Basic Formal Ontology</h2>
+    <p class="muted" id="ontNote"></p>
+    <div class="inline-controls">
+      <select id="ontFilter"><option value="">All BFO branches</option></select>
+      <input type="search" id="ontSearch" placeholder="Search classes and definitions…" />
+    </div>
+  </div>
+  <div class="ont-layout">
+    <div id="ontTree" class="ont-tree"></div>
+    <div id="ontDetail" class="ont-detail"><p class="muted">Select a class to see its BFO grounding, definition and axioms.</p></div>
+  </div>
+</section>
+
+<!-- ======================= TAXONOMY ======================= -->
+<section id="view-taxonomy" class="view view-doc">
+  <div class="doc-head">
+    <h2>A basic faceted taxonomy for HAO</h2>
+    <p class="muted" id="taxNote"></p>
+  </div>
+  <div id="taxGrid" class="tax-grid"></div>
+  <div class="doc-head" style="margin-top:2rem"><h3>Worked examples</h3></div>
+  <div id="taxExamples" class="tax-examples"></div>
+</section>
+
+<!-- ======================= ABOUT ======================= -->
+<section id="view-about" class="view view-doc">
+  <div class="doc-head"><h2>About this prototype</h2></div>
+  <div id="aboutBox" class="about-box"></div>
+</section>
+
+<div id="toast" class="toast" hidden></div>
+
+<script src="data/embedded-data.js"></script>
+<script src="data/worldmap.js"></script>
+<script src="js/flightpath.js"></script>
+<script src="js/planview.js"></script>
+<script src="js/roadmap.js"></script>
+<script src="js/heatmap.js"></script>
+<script src="js/ontology.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

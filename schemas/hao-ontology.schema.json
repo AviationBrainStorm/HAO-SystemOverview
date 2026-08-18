@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://icao.int/hao/schemas/hao-ontology.schema.json",
+  "title": "HAO ontology (BFO-conformant)",
+  "description": "Schema for an HAO ontology grounded in the Basic Formal Ontology. Every domain class must declare the single BFO class it specialises.",
+  "type": "object",
+  "required": ["meta", "bfoBackbone", "relations", "classes", "axioms"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": ["ontologyId", "title", "version", "upperOntology"],
+      "properties": {
+        "ontologyId": { "type": "string" },
+        "title": { "type": "string" },
+        "version": { "type": "string" },
+        "upperOntology": { "type": "string" },
+        "midLevel": { "type": "array", "items": { "type": "string" } },
+        "namespace": { "type": "string", "format": "uri-reference" },
+        "designNote": { "type": "string" }
+      }
+    },
+    "bfoBackbone": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "label"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^bfo:" },
+          "label": { "type": "string" },
+          "parent": { "type": ["string", "null"] },
+          "note": { "type": "string" }
+        }
+      }
+    },
+    "relations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "label"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^rel:" },
+          "label": { "type": "string" },
+          "domain": { "type": "string" },
+          "range": { "type": "string" },
+          "inverse": { "type": "string" },
+          "note": { "type": "string" }
+        }
+      }
+    },
+    "classes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "label", "bfo"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^hao:" },
+          "label": { "type": "string" },
+          "bfo": {
+            "type": "string",
+            "description": "The BFO class this domain class specialises. Exactly one.",
+            "enum": [
+              "bfo:Entity", "bfo:Continuant", "bfo:Occurrent",
+              "bfo:IndependentContinuant", "bfo:MaterialEntity", "bfo:Object", "bfo:ObjectAggregate",
+              "bfo:ImmaterialEntity", "bfo:SiteBFO", "bfo:SpatialRegion",
+              "bfo:SpecificallyDependentContinuant", "bfo:Quality", "bfo:RealizableEntity",
+              "bfo:Role", "bfo:Disposition", "bfo:Function",
+              "bfo:GenericallyDependentContinuant",
+              "bfo:Process", "bfo:ProcessBoundary", "bfo:TemporalRegion", "bfo:SpatiotemporalRegion"
+            ]
+          },
+          "parent": { "type": "string", "description": "Optional domain-level superclass. Must itself be a hao: class with a compatible bfo value." },
+          "definition": { "type": "string" },
+          "examples": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "axioms": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["subject", "relation", "object"],
+        "properties": {
+          "subject": { "type": "string" },
+          "relation": { "type": "string", "pattern": "^rel:" },
+          "object": { "type": "string" },
+          "note": { "type": "string" }
+        }
+      }
+    },
+    "modellingNotes": { "type": "array", "items": { "type": "string" } }
+  }
+}
