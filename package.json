@@ -1,0 +1,88 @@
+{
+  "name": "hao-navigator",
+  "version": "0.9.0",
+  "description": "HAO Navigator — a zero-dependency, single-page prototype for navigating the Higher Airspace Operations (HAO) data set: vehicle classes, design flight paths and their intersection with other traffic, ATS interactions, services, CNS and equipage, gaps in existing ICAO provisions, alignment with the GANP and GATMOC, and the dependency of that work on ICAO expert groups. Space vehicles (orbital, suborbital, launch, re-entry) are out of scope.",
+  "private": true,
+  "license": "SEE LICENSE IN README.md",
+  "author": "Fattah, Yuri (ICAO)",
+  "homepage": "https://icao.int/hao",
+  "keywords": [
+    "icao",
+    "higher-airspace-operations",
+    "hao",
+    "haps",
+    "supersonic",
+    "atm",
+    "gatmoc",
+    "ganp",
+    "bfo",
+    "ontology",
+    "taxonomy",
+    "aviation",
+    "air-navigation",
+    "zero-dependency",
+    "offline",
+    "visualization"
+  ],
+  "main": "index.html",
+  "type": "module",
+  "engines": {
+    "node": ">=18",
+    "python": ">=3.8"
+  },
+  "browserslist": [
+    "last 2 Chrome versions",
+    "last 2 Firefox versions",
+    "last 2 Safari versions"
+  ],
+  "dependencies": {},
+  "devDependencies": {},
+  "config": {
+    "port": "8000"
+  },
+  "scripts": {
+    "validate": "python3 tools/validate.py",
+    "build": "python3 tools/build-embedded.py",
+    "prebuild": "python3 tools/validate.py",
+    "start": "python3 -m http.server 8000",
+    "serve": "python3 -m http.server 8000",
+    "open": "open index.html || start index.html || xdg-open index.html"
+  },
+  "files": [
+    "index.html",
+    "css/styles.css",
+    "js/flightpath.js",
+    "js/heatmap.js",
+    "js/ontology.js",
+    "js/app.js",
+    "data/hao-dataset.json",
+    "data/hao-ontology.json",
+    "data/hao-taxonomy.json",
+    "data/embedded-data.js",
+    "schemas/hao-dataset.schema.json",
+    "schemas/hao-ontology.schema.json",
+    "schemas/hao-taxonomy.schema.json",
+    "tools/build-embedded.py",
+    "tools/validate.py",
+    "README.md"
+  ],
+  "directories": {
+    "doc": ".",
+    "lib": "js"
+  },
+  "hao": {
+    "datasetId": "HAO-NAV-SEED-001",
+    "datasetVersion": "0.9.0",
+    "ontologyId": "HAO-ONT",
+    "taxonomyId": "HAO-TAX",
+    "upperOntology": "Basic Formal Ontology (BFO 2.0 / ISO/IEC 21838-2)",
+    "schemas": {
+      "dataset": "schemas/hao-dataset.schema.json",
+      "ontology": "schemas/hao-ontology.schema.json",
+      "taxonomy": "schemas/hao-taxonomy.schema.json"
+    },
+    "runsFromFileProtocol": true,
+    "buildStep": false,
+    "note": "Seed data is embedded in data/embedded-data.js so the tool runs from file:// without a server. Edit the JSON in data/, then run `npm run validate` and `npm run build` to regenerate the embedded bundle. Do not hand-edit data/embedded-data.js."
+  }
+}
