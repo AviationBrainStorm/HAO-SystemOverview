@@ -276,7 +276,7 @@ function renderPlanView(svg, scenario, vehicle, firRegions, opts = {}) {
   if (tipEl) {
     const wrap = svg.parentElement;
     svg.querySelectorAll('.hitp').forEach(node => {
-      node.addEventListener('mouseenter', () => { tipEl.innerHTML = node.dataset.tip; tipEl.hidden = false; });
+      node.addEventListener('mouseenter', () => { HAOSafe.setHTML(tipEl, node.dataset.tip); tipEl.hidden = false; });
       node.addEventListener('mousemove', e => {
         const r = wrap.getBoundingClientRect();
         let lx = e.clientX - r.left + 14, ly = e.clientY - r.top + 14;

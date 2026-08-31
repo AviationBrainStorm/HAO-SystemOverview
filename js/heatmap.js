@@ -28,14 +28,14 @@ function heatColour(v) {
  * @param {Object} opts          { vehicleId, useCaseId, sortByLoad, onScenario, onGroup }
  */
 function renderHeatMap(host, data, opts = {}) {
-  host.innerHTML = '';
+  HAOSafe.clear(host);
 
   let scenarios = data.scenarios.slice();
   if (opts.vehicleId) scenarios = scenarios.filter(s => s.vehicleClassId === opts.vehicleId);
   if (opts.useCaseId) scenarios = scenarios.filter(s => (s.useCases || []).includes(opts.useCaseId));
 
   if (!scenarios.length) {
-    host.innerHTML = '<p class="empty-note">No scenarios match the current filter.</p>';
+    HAOSafe.setHTML(host, '<p class="empty-note">No scenarios match the current filter.</p>');
     return;
   }
 
@@ -105,7 +105,7 @@ function renderHeatMap(host, data, opts = {}) {
   const fr = document.createElement('tr');
   const fth = document.createElement('th');
   fth.className = 'rowhead';
-  fth.innerHTML = '<em style="color:var(--text-3);font-size:.7rem">Total dependency</em>';
+  HAOSafe.setHTML(fth, '<em style="color:var(--text-3);font-size:.7rem">Total dependency</em>');
   fr.appendChild(fth);
   groups.forEach(g => {
     const td = document.createElement('td');
@@ -123,8 +123,8 @@ function renderHeatMap(host, data, opts = {}) {
   // key
   const key = document.createElement('div');
   key.className = 'heat-key';
-  key.innerHTML = '<span style="margin-right:.3rem">Dependency:</span>' +
-    HEAT_STOPS.map(s => `<i style="background:${heatColour(s.v)}"></i><span>${s.v} ${s.label}</span>`).join('');
+  HAOSafe.setHTML(key, '<span style="margin-right:.3rem">Dependency:</span>' +
+    HEAT_STOPS.map(s => `<i style="background:${heatColour(s.v)}"></i><span>${s.v} ${s.label}</span>`).join(''));
   host.appendChild(key);
 }
 

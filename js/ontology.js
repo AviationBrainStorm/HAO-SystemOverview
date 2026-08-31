@@ -21,7 +21,7 @@ const BFO_BRANCHES = [
 ];
 
 function renderOntTree(host, ont, state, onSelect) {
-  host.innerHTML = '';
+  HAOSafe.clear(host);
   const q = (state.search || '').toLowerCase().trim();
 
   BFO_BRANCHES.forEach(branch => {
@@ -45,7 +45,7 @@ function renderOntTree(host, ont, state, onSelect) {
     members.forEach(c => {
       const b = document.createElement('button');
       b.className = 'ont-node' + (state.selected === c.id ? ' on' : '');
-      b.innerHTML = `${c.label} <span class="oid">${c.id}</span>`;
+      HAOSafe.setHTML(b, `${c.label} <span class="oid">${c.id}</span>`);
       b.addEventListener('click', () => onSelect(c.id));
       wrap.appendChild(b);
     });
@@ -53,7 +53,7 @@ function renderOntTree(host, ont, state, onSelect) {
   });
 
   if (!host.children.length) {
-    host.innerHTML = '<p class="empty-note">No classes match that search.</p>';
+    HAOSafe.setHTML(host, '<p class="empty-note">No classes match that search.</p>');
   }
 }
 
@@ -68,7 +68,7 @@ function labelFor(ont, id) {
 function renderOntDetail(host, ont, id) {
   const c = ont.classes.find(x => x.id === id);
   if (!c) {
-    host.innerHTML = '<p class="muted">Select a class to see its BFO grounding, definition and axioms.</p>';
+    HAOSafe.setHTML(host, '<p class="muted">Select a class to see its BFO grounding, definition and axioms.</p>');
     return;
   }
 
@@ -78,7 +78,7 @@ function renderOntDetail(host, ont, id) {
 
   const parent = c.parent ? ont.classes.find(x => x.id === c.parent) : null;
 
-  host.innerHTML = `
+  HAOSafe.setHTML(host, `
     <span class="bfo-tag">${c.bfo}</span>
     <h3>${c.label}</h3>
     <p class="muted" style="font-family:var(--mono);font-size:.72rem">${c.id}</p>
@@ -91,11 +91,11 @@ function renderOntDetail(host, ont, id) {
 
     ${incoming.length ? `<h4 style="margin-top:.9rem;font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;color:var(--text-3)">Referenced by</h4>
       ${incoming.map(a => `<div class="axiom">${labelFor(ont, a.subject)} <em>${relLabel(a.relation)}</em> ${c.label}</div>`).join('')}` : ''}
-  `;
+  `);
 }
 
 function renderOntFilterOptions(sel, ont) {
-  sel.innerHTML = '<option value="">All BFO branches</option>';
+  HAOSafe.setHTML(sel, '<option value="">All BFO branches</option>');
   BFO_BRANCHES.forEach(b => {
     const n = ont.classes.filter(c => c.bfo === b.key).length;
     if (!n) return;
@@ -114,13 +114,13 @@ function termHTML(t) {
 }
 
 function renderTaxonomy(host, tax) {
-  host.innerHTML = tax.facets.map(f => `
+  HAOSafe.setHTML(host, tax.facets.map(f => `
     <div class="tax-card">
       <span class="facet-id">${f.id}</span>
       <h3>${f.name}</h3>
       ${f.note ? `<p class="muted">${f.note}</p>` : ''}
       <ul class="tax-list">${f.terms.map(termHTML).join('')}</ul>
-    </div>`).join('');
+    </div>`).join(''));
 }
 
 function renderTaxExamples(host, tax) {
@@ -132,7 +132,7 @@ function renderTaxExamples(host, tax) {
   tax.facets.forEach(f => f.terms.forEach(t => walk(t, f.id)));
   const facetName = fid => (tax.facets.find(f => f.id === fid) || {}).name || fid;
 
-  host.innerHTML = (tax.workedExamples || []).map(ex => `
+  HAOSafe.setHTML(host, (tax.workedExamples || []).map(ex => `
     <div class="tax-card">
       <h3 style="font-size:.85rem">${ex.label}</h3>
       ${Object.entries(ex.coding).map(([fid, val]) => {
@@ -142,7 +142,7 @@ function renderTaxExamples(host, tax) {
           <span class="v">${ids.map(i => `<span class="pill accent">${termIndex[i]?.label || i}</span>`).join('')}</span>
         </div>`;
       }).join('')}
-    </div>`).join('');
+    </div>`).join(''));
 }
 
 window.HAOOnt = {

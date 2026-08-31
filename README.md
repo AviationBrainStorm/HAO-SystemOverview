@@ -14,9 +14,10 @@ Static files, no build step, no server-side anything. Copy the folder to any web
 hao-navigator-shared/
 ├── index.html
 ├── css/styles.css
-├── js/          6 files, no dependencies
+├── js/          8 files, no dependencies (includes sanitize.js — the HTML sink)
 ├── data/        embedded-data.js, worldmap.js
-└── schemas/     3 JSON Schemas (documentation)
+├── schemas/     3 JSON Schemas (documentation)
+└── tests/       helper unit test + browser XSS self-test
 ```
 
 It also runs straight from `file://` — double-clicking `index.html` works, because the dataset is embedded in `data/embedded-data.js` rather than fetched. That matters if you send the folder to someone as a zip.
@@ -117,6 +118,16 @@ The dataset is a synthesis, not a transcription.
 - Natural Earth 1:110m admin-0 (public domain) for the plan view coastlines
 
 ---
+
+## Security
+
+All dynamic markup is rendered through a single sanitising sink,
+`js/sanitize.js` (`window.HAOSafe`). Dataset values are never written to
+`innerHTML`; instead they are parsed in an inert `DOMParser` document,
+stripped of scripts, event-handler attributes and scriptable URLs, and
+inserted with `replaceChildren()`. This removes the cross-site-scripting
+(XSS) risk that comes with building HTML from data. See `SECURITY.md` for
+detail, and `tests/xss-selftest.html` (open in a browser) to verify.
 
 ## Accessibility
 

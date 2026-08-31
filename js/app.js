@@ -99,11 +99,11 @@
 
   function drawVehicles() {
     const host = $('#vehicleList');
-    host.innerHTML = '';
+    HAOSafe.clear(host);
     state.data.vehicleClasses.forEach(v => {
       const b = document.createElement('button');
       b.className = 'chip' + (state.vehicleId === v.id ? ' on' : '');
-      b.innerHTML = `<span class="dot" style="background:${v.colour || 'var(--accent)'}"></span>${v.shortName || v.name}`;
+      HAOSafe.setHTML(b, `<span class="dot" style="background:${v.colour || 'var(--accent)'}"></span>${v.shortName || v.name}`);
       b.title = `${v.name}\nLift: ${v.liftPrinciple}\n${v.controlAuthority || ''}`;
       b.addEventListener('click', () => {
         state.vehicleId = state.vehicleId === v.id ? null : v.id;
@@ -117,7 +117,7 @@
 
   function drawPhases() {
     const host = $('#phaseList');
-    host.innerHTML = '';
+    HAOSafe.clear(host);
     const avail = new Set(scenariosFor(state.vehicleId, null, state.useCaseFilter).map(s => s.phaseId));
     state.data.flightPhases
       .slice().sort((a, b) => (a.order || 0) - (b.order || 0))
@@ -133,21 +133,21 @@
         });
         host.appendChild(b);
       });
-    if (!host.children.length) host.innerHTML = '<p class="empty-note">No phases for this filter.</p>';
+    if (!host.children.length) HAOSafe.setHTML(host, '<p class="empty-note">No phases for this filter.</p>');
   }
 
   function drawScenarioList() {
     const host = $('#scenarioList');
-    host.innerHTML = '';
+    HAOSafe.clear(host);
     const list = scenariosFor(state.vehicleId, state.phaseId, state.useCaseFilter);
-    if (!list.length) { host.innerHTML = '<p class="empty-note">No scenarios match. Clear a filter.</p>'; return; }
+    if (!list.length) { HAOSafe.setHTML(host, '<p class="empty-note">No scenarios match. Clear a filter.</p>'); return; }
     list.forEach(s => {
       const v = byId(state.data.vehicleClasses, s.vehicleClassId);
       const ph = byId(state.data.flightPhases, s.phaseId);
       const b = document.createElement('button');
       b.className = 'sc-item' + (state.scenarioId === s.id ? ' on' : '');
       b.style.borderLeftColor = v?.colour || 'var(--accent)';
-      b.innerHTML = `${s.name}<span class="sc-meta">${ph?.name || ''} · ${(s.provisionGaps || []).length} gaps</span>`;
+      HAOSafe.setHTML(b, `${s.name}<span class="sc-meta">${ph?.name || ''} · ${(s.provisionGaps || []).length} gaps</span>`);
       b.addEventListener('click', () => { state.scenarioId = s.id; drawExplorer(); });
       host.appendChild(b);
     });
@@ -155,7 +155,7 @@
 
   function drawUseCaseFilter() {
     const host = $('#useCaseFilter');
-    host.innerHTML = '';
+    HAOSafe.clear(host);
     (state.data.useCases || []).forEach(u => {
       const b = document.createElement('button');
       b.className = 'chip' + (state.useCaseFilter === u.id ? ' on' : '');
@@ -189,10 +189,10 @@
       $('#chartTip'));
 
     const leg = $('#stageLegend');
-    leg.innerHTML = s
+    HAOSafe.setHTML(leg, s
       ? window.HAOChart.flightPathLegend(s)
           .map(l => `<span><i style="background:${l.colour}"></i>${l.label}</span>`).join('')
-      : '';
+      : '');
   }
 
   function drawStage() {
@@ -202,7 +202,7 @@
       $('#scenarioSub').textContent = '';
       $('#scenarioNarrative').textContent = '';
       ['#atsBox', '#servicesBox', '#cnsBox', '#equipageBox', '#infoBox', '#gapMini']
-        .forEach(sel => { $(sel).innerHTML = ''; });
+        .forEach(sel => { HAOSafe.clear($(sel)); });
       return;
     }
 
@@ -211,10 +211,9 @@
     const ucNames = (s.useCases || []).map(id => byId(state.data.useCases, id)?.name).filter(Boolean);
 
     $('#scenarioTitle').textContent = s.name;
-    $('#scenarioSub').innerHTML =
-      `<span class="pill accent">${v?.name || ''}</span>` +
+    HAOSafe.setHTML($('#scenarioSub'), `<span class="pill accent">${v?.name || ''}</span>` +
       `<span class="pill">${ph?.name || ''}</span>` +
-      ucNames.map(n => `<span class="pill">${n}</span>`).join('');
+      ucNames.map(n => `<span class="pill">${n}</span>`).join(''));
     $('#scenarioNarrative').textContent = s.narrative || '';
 
     drawChart();
@@ -230,33 +229,33 @@
     $('#kpiServices .kpi-n').textContent = (s.services || []).length;
 
     // ATS
-    $('#atsBox').innerHTML = `
+    HAOSafe.setHTML($('#atsBox'), `
       <span class="mode-badge">${s.atsInteraction?.mode || 'n/a'}</span>
       <p class="muted">${s.atsInteraction?.description || ''}</p>
       ${(s.atsInteraction?.responsibilities || []).length
-        ? `<ul class="tight-list">${s.atsInteraction.responsibilities.map(r => `<li>${r}</li>`).join('')}</ul>` : ''}`;
+        ? `<ul class="tight-list">${s.atsInteraction.responsibilities.map(r => `<li>${r}</li>`).join('')}</ul>` : ''}`);
 
     // services
-    $('#servicesBox').innerHTML = (s.services || []).map(id => {
+    HAOSafe.setHTML($('#servicesBox'), (s.services || []).map(id => {
       const sv = byId(state.data.serviceCatalogue, id);
       return `<span class="chip static" style="font-size:.72rem" title="${sv?.gatmoc ? 'GATMOC: ' + sv.gatmoc : ''}">${sv?.name || id}</span>`;
-    }).join('') || '<p class="empty-note">None specified.</p>';
+    }).join('') || '<p class="empty-note">None specified.</p>');
 
     // CNS
-    $('#cnsBox').innerHTML = `
+    HAOSafe.setHTML($('#cnsBox'), `
       <div class="kv"><span class="k">Communication</span><span class="v">${s.cns?.communication || '—'}</span></div>
       <div class="kv"><span class="k">Navigation</span><span class="v">${s.cns?.navigation || '—'}</span></div>
-      <div class="kv"><span class="k">Surveillance</span><span class="v">${s.cns?.surveillance || '—'}</span></div>`;
+      <div class="kv"><span class="k">Surveillance</span><span class="v">${s.cns?.surveillance || '—'}</span></div>`);
 
-    $('#equipageBox').innerHTML = (s.equipage || []).map(e => `<li>${e}</li>`).join('') || '<li class="empty-note">None specified.</li>';
-    $('#infoBox').innerHTML     = (s.informationRequirements || []).map(e => `<li>${e}</li>`).join('') || '<li class="empty-note">None specified.</li>';
+    HAOSafe.setHTML($('#equipageBox'), (s.equipage || []).map(e => `<li>${e}</li>`).join('') || '<li class="empty-note">None specified.</li>');
+    HAOSafe.setHTML($('#infoBox'), (s.informationRequirements || []).map(e => `<li>${e}</li>`).join('') || '<li class="empty-note">None specified.</li>');
 
-    $('#gapMini').innerHTML = gaps
+    HAOSafe.setHTML($('#gapMini'), gaps
       .sort((a, b) => b.severity - a.severity)
       .map(g => `<div class="gap-mini" style="border-left-color:${sevColour(g.severity)}" data-gap="${g.id}">
           <strong>${g.title}</strong>
           <span class="gm-inst">${g.instrument}${g.reference ? ' · ' + g.reference : ''} · severity ${g.severity}/5</span>
-        </div>`).join('') || '<p class="empty-note">No gaps recorded.</p>';
+        </div>`).join('') || '<p class="empty-note">No gaps recorded.</p>');
 
     $$('#gapMini .gap-mini').forEach(n => n.addEventListener('click', () => {
       $('#gapScopeToggle').checked = true;
@@ -272,7 +271,7 @@
         note.className = 'empty-note';
         note.style.color = 'var(--danger)';
         note.style.fontStyle = 'normal';
-        note.innerHTML = `${un.length} of these ${un.length === 1 ? 'has' : 'have'} no job card behind ${un.length === 1 ? 'it' : 'them'}.`;
+        HAOSafe.setHTML(note, `${un.length} of these ${un.length === 1 ? 'has' : 'have'} no job card behind ${un.length === 1 ? 'it' : 'them'}.`);
         $('#gapMini').appendChild(note);
       }
     }
@@ -287,16 +286,16 @@
 
   function drawPvScenarioList() {
     const host = $('#pvScenarioList');
-    host.innerHTML = '';
+    HAOSafe.clear(host);
     const list = state.data.scenarios.filter(s => s.groundTrack);
-    if (!list.length) { host.innerHTML = '<p class="empty-note">No scenarios carry a ground track.</p>'; return; }
+    if (!list.length) { HAOSafe.setHTML(host, '<p class="empty-note">No scenarios carry a ground track.</p>'); return; }
     list.forEach(s => {
       const v = byId(state.data.vehicleClasses, s.vehicleClassId);
       const n = (s.groundTrack.firCrossings || []).length;
       const b = document.createElement('button');
       b.className = 'sc-item' + (state.scenarioId === s.id ? ' on' : '');
       b.style.borderLeftColor = v?.colour || 'var(--accent)';
-      b.innerHTML = `${s.name}<span class="sc-meta">${n} boundary crossing${n === 1 ? '' : 's'}</span>`;
+      HAOSafe.setHTML(b, `${s.name}<span class="sc-meta">${n} boundary crossing${n === 1 ? '' : 's'}</span>`);
       b.addEventListener('click', () => { state.scenarioId = s.id; drawPlanView(); });
       host.appendChild(b);
     });
@@ -314,7 +313,7 @@
     const ph = byId(state.data.flightPhases, s.phaseId);
 
     $('#pvTitle').textContent = s.name;
-    $('#pvSub').innerHTML = `<span class="pill accent">${v?.name || ''}</span><span class="pill">${ph?.name || ''}</span>`;
+    HAOSafe.setHTML($('#pvSub'), `<span class="pill accent">${v?.name || ''}</span><span class="pill">${ph?.name || ''}</span>`);
     $('#pvNote').textContent = s.groundTrack.note || s.narrative || '';
 
     window.HAOPlan.renderPlanView($('#planChart'), s, v, state.data.firRegions || [], {
@@ -323,10 +322,10 @@
       tipEl: $('#planTip')
     });
 
-    $('#pvLegend').innerHTML = window.HAOPlan.planViewLegend()
-      .map(l => `<span class="chip static" style="font-size:.72rem"><span class="dot" style="background:${l.colour}"></span>${l.label}</span>`).join('');
+    HAOSafe.setHTML($('#pvLegend'), window.HAOPlan.planViewLegend()
+      .map(l => `<span class="chip static" style="font-size:.72rem"><span class="dot" style="background:${l.colour}"></span>${l.label}</span>`).join(''));
 
-    $('#pvJurisdiction').innerHTML = window.HAOPlan.jurisdictionSummary(s, state.data.firRegions || []);
+    HAOSafe.setHTML($('#pvJurisdiction'), window.HAOPlan.jurisdictionSummary(s, state.data.firRegions || []));
   }
 
   /* ---------------- roadmap ---------------- */
@@ -338,10 +337,10 @@
     }
     window.HAORoadmap.renderRoadmap($('#roadmapGantt'), state.data, {
       groupFilter: sel.value,
-      onCard: c => { state.jcSelected = c.id; $('#jcDetail').innerHTML = window.HAORoadmap.jobCardDetailHTML(c, state.data); }
+      onCard: c => { state.jcSelected = c.id; HAOSafe.setHTML($('#jcDetail'), window.HAORoadmap.jobCardDetailHTML(c, state.data)); }
     });
     const sc = state.jcSelected ? (state.data.jobCards || []).find(c => c.id === state.jcSelected) : null;
-    $('#jcDetail').innerHTML = window.HAORoadmap.jobCardDetailHTML(sc, state.data);
+    HAOSafe.setHTML($('#jcDetail'), window.HAORoadmap.jobCardDetailHTML(sc, state.data));
     window.HAORoadmap.renderCoverage($('#coverageTable'), state.data, {
       onlyUncovered: $('#rmOnlyUncovered').checked
     });
@@ -365,7 +364,7 @@
 
     const groupName = id => byId(state.data.expertGroups, id)?.name || id;
 
-    $('#gapTable').innerHTML = gaps.length ? `
+    HAOSafe.setHTML($('#gapTable'), gaps.length ? `
       <table class="grid">
         <thead><tr>
           <th style="width:60px">Sev</th>
@@ -387,7 +386,7 @@
             <td style="text-align:center;font-weight:700;color:var(--accent)">${freq[g.id] || 0}</td>
           </tr>`).join('')}
         </tbody>
-      </table>` : '<p class="empty-note">No gaps in scope.</p>';
+      </table>` : '<p class="empty-note">No gaps in scope.</p>');
   }
 
   /* ---------------- heat view ---------------- */
@@ -402,7 +401,7 @@
       vehicleId: vSel.value,
       useCaseId: uSel.value,
       sortByLoad: $('#heatSortByLoad').checked,
-      onGroup: (g, scen) => { $('#heatDetail').innerHTML = window.HAOHeat.groupDetailHTML(g, scen); },
+      onGroup: (g, scen) => { HAOSafe.setHTML($('#heatDetail'), window.HAOHeat.groupDetailHTML(g, scen)); },
       onScenario: sc => { state.scenarioId = sc.id; state.vehicleId = sc.vehicleClassId; state.phaseId = null; drawExplorer(); setView('explorer'); }
     });
   }
@@ -427,13 +426,12 @@
   }
 
   function drawGanp() {
-    $('#visionQuote').innerHTML = state.data.meta?.holisticVision
+    HAOSafe.setHTML($('#visionQuote'), state.data.meta?.holisticVision
       ? `<em>“${state.data.meta.holisticVision}”</em><br><span style="font-size:.78rem">HAO Holistic Vision V0.2, endorsed by ATMRPP-WG/47. The mapping below counts how many scenarios in the dataset touch each element, so that HAO is expressed in existing GATMOC and GANP language rather than a parallel vocabulary.</span>`
-      : '';
+      : '');
 
     const g = state.data.gatmoc || {}, p = state.data.ganp || {};
-    $('#ganpGrid').innerHTML =
-      barCard('GATMOC concept components', countAcross('gatmocComponents', g.components),
+    HAOSafe.setHTML($('#ganpGrid'), barCard('GATMOC concept components', countAcross('gatmocComponents', g.components),
         'Doc 9854 is the only overarching Concept of Operations for the Air Navigation Bureau; every HAO element should map to it or generate an amendment proposal.') +
       barCard('Key performance areas', countAcross('kpas', g.kpas),
         'HAO inherits the GANP performance ambitions for each KPA. Where a more precise ambition is needed, that is fed back to the GANP.') +
@@ -452,7 +450,7 @@
       <div class="ganp-card">
         <h3>Vertical reference constraint</h3>
         <p class="muted">${state.data.referenceAirspace?.altimetryNote || ''}</p>
-      </div>`;
+      </div>`);
   }
 
   /* ---------------- ontology / taxonomy views ---------------- */
@@ -478,7 +476,7 @@
 
   function drawAbout() {
     const m = state.data.meta || {};
-    $('#aboutBox').innerHTML = `
+    HAOSafe.setHTML($('#aboutBox'), `
       <h3>What this is</h3>
       <p>A working prototype for navigating the Higher Airspace Operations data set: vehicle classes, design flight paths and their intersection with other traffic, ATS interactions, services, CNS and equipage, the resulting gaps in ICAO provisions, the mapping to the GANP and GATMOC, and the dependency of that work on ICAO expert groups.</p>
 
@@ -502,7 +500,7 @@
       <h3>Sources drawn on for the seed data</h3>
       <ul>${(m.provenance || []).map(p => `<li>${p}</li>`).join('')}</ul>
 
-      <p class="muted" style="margin-top:1.2rem">Dataset <code>${m.datasetId || ''}</code> version ${m.version || ''}${m.issued ? ', issued ' + m.issued : ''}. Ontology ${state.ont.meta?.version || ''}, taxonomy ${state.tax.meta?.version || ''}.</p>`;
+      <p class="muted" style="margin-top:1.2rem">Dataset <code>${m.datasetId || ''}</code> version ${m.version || ''}${m.issued ? ', issued ' + m.issued : ''}. Ontology ${state.ont.meta?.version || ''}, taxonomy ${state.tax.meta?.version || ''}.</p>`);
   }
 
   /* ---------------- data import / export ---------------- */
@@ -529,7 +527,7 @@
   /* ---------------- boot ---------------- */
 
   function init() {
-    if (!window.HAO_SEED) { document.body.innerHTML = '<p style="padding:2rem">Seed data failed to load. Check data/embedded-data.js.</p>'; return; }
+    if (!window.HAO_SEED) { HAOSafe.setHTML(document.body, '<p style="padding:2rem">Seed data failed to load. Check data/embedded-data.js.</p>'); return; }
     state.data = JSON.parse(JSON.stringify(window.HAO_SEED.dataset));
     state.ont  = window.HAO_SEED.ontology;
     state.tax  = window.HAO_SEED.taxonomy;

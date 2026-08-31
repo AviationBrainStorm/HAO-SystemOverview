@@ -77,9 +77,9 @@ function buildCoverage(data) {
 
 /* ---- Gantt timeline ---------------------------------------------------- */
 function renderRoadmap(host, data, opts = {}) {
-  host.innerHTML = '';
+  HAOSafe.clear(host);
   const cards = (data.jobCards || []).slice();
-  if (!cards.length) { host.innerHTML = '<p class="empty-note">No job cards in the dataset.</p>'; return; }
+  if (!cards.length) { HAOSafe.setHTML(host, '<p class="empty-note">No job cards in the dataset.</p>'); return; }
 
   if (opts.groupFilter) {
     // Keep cards where the group is primary OR supporting.
@@ -90,7 +90,7 @@ function renderRoadmap(host, data, opts = {}) {
       }
     }
   }
-  if (!cards.length) { host.innerHTML = '<p class="empty-note">No job cards involve that expert group.</p>'; return; }
+  if (!cards.length) { HAOSafe.setHTML(host, '<p class="empty-note">No job cards involve that expert group.</p>'); return; }
 
   // Axis extent from all parsed dates.
   const all = [];
@@ -136,10 +136,10 @@ function renderRoadmap(host, data, opts = {}) {
     </div>`;
   }).join('');
 
-  host.innerHTML = ruler + rows +
+  HAOSafe.setHTML(host, ruler + rows +
     `<div class="heat-key" style="margin-top:1rem"><span style="margin-right:.3rem">Element status:</span>` +
     Object.entries(STATUS_COLOUR).map(([k, v]) => `<i style="background:${v}"></i><span>${k}</span>`).join('') +
-    `</div>`;
+    `</div>`);
 
   host.querySelectorAll('.rm-row').forEach(r => {
     r.addEventListener('click', () => opts.onCard && opts.onCard(cards.find(c => c.id === r.dataset.jc)));
@@ -200,7 +200,7 @@ function renderCoverage(host, data, opts = {}) {
     }).join('')}
     </tbody></table>`;
 
-  host.innerHTML = summary + table;
+  HAOSafe.setHTML(host, summary + table);
 }
 
 /* ---- job card detail --------------------------------------------------- */

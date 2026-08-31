@@ -272,7 +272,7 @@ function renderFlightPath(svg, scenario, vehicle, bands, tipEl) {
     const wrap = svg.parentElement;
     svg.querySelectorAll('.hit').forEach(node => {
       node.addEventListener('mouseenter', e => {
-        tipEl.innerHTML = node.dataset.tip;
+        HAOSafe.setHTML(tipEl, node.dataset.tip);
         tipEl.hidden = false;
       });
       node.addEventListener('mousemove', e => {
