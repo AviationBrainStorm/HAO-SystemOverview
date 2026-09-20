@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://icao.int/hao/schemas/parts/provision-gaps.schema.json",
+  "title": "ICAO provision gaps",
+  "description": "The gap register. Mounts at dataset.provisionGaps.",
+  "$comment": "Governs the `payload` of a data part. The part file itself is validated against hao-part.schema.json.",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": [
+      "id",
+      "title",
+      "instrument",
+      "gapType",
+      "severity"
+    ],
+    "properties": {
+      "id": {
+        "type": "string",
+        "pattern": "^GAP-[A-Z0-9-]+$"
+      },
+      "title": {
+        "type": "string"
+      },
+      "instrument": {
+        "type": "string",
+        "description": "The ICAO Annex, PANS, Doc or other instrument affected."
+      },
+      "reference": {
+        "type": "string",
+        "description": "Chapter, appendix or paragraph reference."
+      },
+      "gapType": {
+        "type": "string",
+        "enum": [
+          "Amendment",
+          "New provision",
+          "Guidance material",
+          "Clarification",
+          "No change required"
+        ]
+      },
+      "severity": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 5,
+        "description": "0 = none, 5 = blocking. Drives the gap heat scale."
+      },
+      "description": {
+        "type": "string"
+      },
+      "proposedAction": {
+        "type": "string"
+      },
+      "owningGroups": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Expert group ids."
+      }
+    }
+  }
+}

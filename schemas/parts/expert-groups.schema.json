@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://icao.int/hao/schemas/parts/expert-groups.schema.json",
+  "title": "ICAO expert groups",
+  "description": "Expert groups. The ids here are the keys used by scenario expertGroupDependency maps and by job card primary/supporting groups. Mounts at dataset.expertGroups.",
+  "$comment": "Governs the `payload` of a data part. The part file itself is validated against hao-part.schema.json.",
+  "type": "array",
+  "minItems": 1,
+  "items": {
+    "type": "object",
+    "required": [
+      "id",
+      "name"
+    ],
+    "properties": {
+      "id": {
+        "type": "string"
+      },
+      "name": {
+        "type": "string"
+      },
+      "fullName": {
+        "type": "string"
+      },
+      "role": {
+        "type": "string"
+      }
+    }
+  }
+}

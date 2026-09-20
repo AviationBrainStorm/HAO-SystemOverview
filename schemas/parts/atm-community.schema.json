@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://icao.int/hao/schemas/parts/atm-community.schema.json",
+  "title": "ATM community categories",
+  "description": "GATMOC ATM community categories. HAO stakeholders map into these rather than adding new ones. Mounts at dataset.gatmoc.atmCommunity.",
+  "$comment": "Governs the `payload` of a data part. The part file itself is validated against hao-part.schema.json.",
+  "type": "array",
+  "items": {
+    "type": "string"
+  },
+  "minItems": 1
+}

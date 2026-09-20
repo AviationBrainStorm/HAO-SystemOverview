@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://icao.int/hao/schemas/parts/vehicle-classes.schema.json",
+  "title": "HAO vehicle classes",
+  "description": "Vehicle classes. Lift must be derived from interaction with the atmosphere; space vehicles are out of scope. Mounts at dataset.vehicleClasses.",
+  "$comment": "Governs the `payload` of a data part. The part file itself is validated against hao-part.schema.json.",
+  "type": "array",
+  "minItems": 1,
+  "items": {
+    "type": "object",
+    "required": [
+      "id",
+      "name",
+      "liftPrinciple"
+    ],
+    "properties": {
+      "id": {
+        "type": "string",
+        "pattern": "^VC-[A-Z0-9-]+$"
+      },
+      "name": {
+        "type": "string"
+      },
+      "shortName": {
+        "type": "string"
+      },
+      "liftPrinciple": {
+        "type": "string",
+        "description": "Must describe lift derived from interaction with the atmosphere. Vehicles that do not derive lift from the atmosphere are out of scope."
+      },
+      "crewing": {
+        "type": "string"
+      },
+      "typicalFloatFt": {
+        "type": "array",
+        "items": {
+          "type": "number"
+        },
+        "minItems": 2,
+        "maxItems": 2
+      },
+      "controlAuthority": {
+        "type": "string"
+      },
+      "enduranceTypical": {
+        "type": "string"
+      },
+      "exemplars": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "regulatoryAnchor": {
+        "type": "string"
+      },
+      "colour": {
+        "type": "string",
+        "pattern": "^#[0-9a-fA-F]{6}$"
+      },
+      "notes": {
+        "type": "string"
+      }
+    }
+  }
+}

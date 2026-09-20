@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://icao.int/hao/schemas/hao-common.schema.json",
+  "title": "HAO shared definitions",
+  "description": "Definitions reused by more than one HAO part schema. Referenced as hao-common.schema.json#/$defs/<name>.",
+  "$defs": {
+    "idNameEntry": {
+      "type": "object",
+      "required": [
+        "id",
+        "name"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "note": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "idNameList": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/idNameEntry"
+      }
+    },
+    "idRef": {
+      "type": "string",
+      "minLength": 1,
+      "description": "An id defined in another part. The runtime registry checks these after assembly; JSON Schema alone cannot."
+    },
+    "idRefList": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/idRef"
+      }
+    },
+    "severity": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 5,
+      "description": "0 = none, 5 = blocking. An analytical judgement recorded in the dataset, not an ICAO position."
+    },
+    "icaoDate": {
+      "type": "string",
+      "pattern": "^(Q[1-4] [0-9]{4}|[A-Z][a-z]{2} [0-9]{4}|[0-9]{4})?$",
+      "description": "ICAO date form: 'Q2 2028', 'Nov 2028' or '2028'. Empty string means not yet set."
+    }
+  }
+}

@@ -484,9 +484,10 @@
       <p>${m.scopeNote || ''}</p>
 
       <h3>This is a shared, read-only build</h3>
-      <p>Dataset upload is disabled in this build so that everyone viewing it sees the same data. Use <strong>Export</strong> to download the dataset as JSON if you want to work with it yourself. The three schemas below are still shipped, so a colleague can build a conforming dataset and load it into a working copy of the tool:</p>
+      <p>The data is split across <strong>${(window.HAO_DATA?.parts || []).length} part files</strong> under <code>data/parts/</code>, one per collection, assembled at load time by <code>js/data-registry.js</code>. Editing a collection means editing one small file. Dataset upload is disabled in this build so that everyone viewing it sees the same data; use <strong>Export</strong> to download the assembled dataset as JSON. The schemas shipped in <code>schemas/</code> govern both the assembled documents and each individual part:</p>
       <ul>
-        <li><code>hao-dataset.schema.json</code> — vehicle classes, phases, scenarios with trajectories, ground tracks and traffic, services, CNS, equipage, information requirements, provision gaps, job cards, FIR regions, GANP/GATMOC mapping and expert group dependency.</li>
+        <li><code>hao-dataset.schema.json</code> — the assembled dataset: vehicle classes, phases, scenarios with trajectories, ground tracks and traffic, services, CNS, equipage, information requirements, provision gaps, job cards, FIR regions, GANP/GATMOC mapping and expert group dependency. It composes the per-collection schemas by reference.</li>
+        <li><code>parts/*.schema.json</code> — one schema per data part, so a single file can be validated on its own, plus <code>hao-part.schema.json</code> for the registration envelope.</li>
         <li><code>hao-ontology.schema.json</code> — BFO-conformant ontology; every domain class must declare exactly one BFO class.</li>
         <li><code>hao-taxonomy.schema.json</code> — faceted taxonomy with arbitrarily nested terms.</li>
       </ul>
@@ -527,7 +528,18 @@
   /* ---------------- boot ---------------- */
 
   function init() {
-    if (!window.HAO_SEED) { HAOSafe.setHTML(document.body, '<p style="padding:2rem">Seed data failed to load. Check data/embedded-data.js.</p>'); return; }
+    if (!window.HAO_DATA) {
+      HAOSafe.setHTML(document.body, '<p style="padding:2rem">Data registry failed to load. Check js/data-registry.js is the first script in index.html.</p>');
+      return;
+    }
+    // Assembling here (rather than at each part) means every data file has
+    // executed before any integrity check runs. report() prints the part
+    // table and any dangling reference to the console.
+    window.HAO_DATA.report();
+    if (!window.HAO_SEED || !window.HAO_SEED.dataset.scenarios || !window.HAO_SEED.dataset.scenarios.length) {
+      HAOSafe.setHTML(document.body, '<p style="padding:2rem">No data parts loaded. Check the data/parts/ script tags in index.html.</p>');
+      return;
+    }
     state.data = JSON.parse(JSON.stringify(window.HAO_SEED.dataset));
     state.ont  = window.HAO_SEED.ontology;
     state.tax  = window.HAO_SEED.taxonomy;

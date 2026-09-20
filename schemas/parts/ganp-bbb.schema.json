@@ -1,0 +1,8 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://icao.int/hao/schemas/parts/ganp-bbb.schema.json",
+  "title": "GANP Basic Building Blocks",
+  "description": "Mounts at dataset.ganp.bbb.",
+  "$comment": "Governs the `payload` of a data part. The part file itself is validated against hao-part.schema.json.",
+  "$ref": "../hao-common.schema.json#/$defs/idNameList"
+}

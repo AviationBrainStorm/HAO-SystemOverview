@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://icao.int/hao/schemas/hao-part.schema.json",
+  "title": "HAO data part envelope",
+  "description": "Every file under data/parts/ calls HAO_DATA.register() with exactly this object. Validate the argument against this schema, and its payload against the part schema named in `schema`.",
+  "type": "object",
+  "required": [
+    "part",
+    "root",
+    "mount",
+    "payload"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "part": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$",
+      "description": "Unique part id, used in diagnostics. Conventionally the file name without .js."
+    },
+    "root": {
+      "type": "string",
+      "enum": [
+        "dataset",
+        "ontology",
+        "taxonomy"
+      ],
+      "description": "Which assembled document this part contributes to."
+    },
+    "mount": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9]*(\\.[A-Za-z][A-Za-z0-9]*)*$",
+      "description": "Dot path within the root document, e.g. 'scenarios' or 'gatmoc.kpas'. Missing intermediate objects are created."
+    },
+    "schema": {
+      "type": "string",
+      "description": "Path to the schema governing `payload`. Documentation for humans and for the validator; not fetched at runtime."
+    },
+    "version": {
+      "type": "string"
+    },
+    "note": {
+      "type": "string"
+    },
+    "payload": {
+      "description": "Array payloads mounted at the same path are concatenated in load order; object payloads are shallow-merged."
+    }
+  }
+}

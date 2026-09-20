@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://icao.int/hao/schemas/parts/ontology-relations.schema.json",
+  "title": "HAO ontology relations",
+  "description": "Relations with domain, range and inverse. Mounts at ontology.relations.",
+  "$comment": "Governs the `payload` of a data part. The part file itself is validated against hao-part.schema.json.",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": [
+      "id",
+      "label"
+    ],
+    "properties": {
+      "id": {
+        "type": "string",
+        "pattern": "^rel:"
+      },
+      "label": {
+        "type": "string"
+      },
+      "domain": {
+        "type": "string"
+      },
+      "range": {
+        "type": "string"
+      },
+      "inverse": {
+        "type": "string"
+      },
+      "note": {
+        "type": "string"
+      }
+    }
+  }
+}

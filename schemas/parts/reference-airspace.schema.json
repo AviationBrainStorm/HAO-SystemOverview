@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://icao.int/hao/schemas/parts/reference-airspace.schema.json",
+  "title": "HAO reference airspace",
+  "description": "Altitude bands drawn as the backdrop of the altitude profile, and the altimetry constraint note. Mounts at dataset.referenceAirspace.",
+  "$comment": "Governs the `payload` of a data part. The part file itself is validated against hao-part.schema.json.",
+  "type": "object",
+  "properties": {
+    "bands": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "label",
+          "fromFt",
+          "toFt"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "fromFt": {
+            "type": "number",
+            "minimum": 0
+          },
+          "toFt": {
+            "type": "number",
+            "minimum": 0
+          },
+          "note": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "altimetryNote": {
+      "type": "string"
+    }
+  }
+}

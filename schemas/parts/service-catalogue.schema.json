@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://icao.int/hao/schemas/parts/service-catalogue.schema.json",
+  "title": "HAO service catalogue",
+  "description": "Services a scenario may consume, each mapped to a GATMOC component. Mounts at dataset.serviceCatalogue.",
+  "$comment": "Governs the `payload` of a data part. The part file itself is validated against hao-part.schema.json.",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": [
+      "id",
+      "name"
+    ],
+    "properties": {
+      "id": {
+        "type": "string"
+      },
+      "name": {
+        "type": "string"
+      },
+      "gatmoc": {
+        "type": "string"
+      }
+    }
+  }
+}

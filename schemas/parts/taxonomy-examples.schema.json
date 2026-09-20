@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://icao.int/hao/schemas/parts/taxonomy-examples.schema.json",
+  "title": "HAO taxonomy worked examples",
+  "description": "Worked codings of real operations. Mounts at taxonomy.workedExamples.",
+  "$comment": "Governs the `payload` of a data part. The part file itself is validated against hao-part.schema.json.",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": [
+      "label",
+      "coding"
+    ],
+    "properties": {
+      "label": {
+        "type": "string"
+      },
+      "coding": {
+        "type": "object",
+        "description": "Map of facet id to one term id or an array of term ids.",
+        "additionalProperties": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

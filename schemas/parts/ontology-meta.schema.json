@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://icao.int/hao/schemas/parts/ontology-meta.schema.json",
+  "title": "HAO ontology meta",
+  "description": "Ontology identity and upper-ontology declaration. Mounts at ontology.meta.",
+  "$comment": "Governs the `payload` of a data part. The part file itself is validated against hao-part.schema.json.",
+  "type": "object",
+  "required": [
+    "ontologyId",
+    "title",
+    "version",
+    "upperOntology"
+  ],
+  "properties": {
+    "ontologyId": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "upperOntology": {
+      "type": "string"
+    },
+    "midLevel": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "namespace": {
+      "type": "string",
+      "format": "uri-reference"
+    },
+    "designNote": {
+      "type": "string"
+    }
+  }
+}

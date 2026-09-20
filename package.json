@@ -1,7 +1,7 @@
 {
-  "name": "hao-navigator-shared",
-  "version": "1.1.0",
-  "description": "HAO Navigator — a dependency-free, static explorer for the Higher Airspace Operations (HAO) dataset: vehicle classes, design flight paths, cross-FIR ground tracks, ATS interactions, CNS and equipage requirements, gaps in ICAO provisions, the job cards behind them, GANP/GATMOC alignment, a BFO-conformant ontology and a faceted taxonomy. Read-only distribution build.",
+  "name": "hao-navigator-modular",
+  "version": "2.0.0",
+  "description": "HAO Navigator — a dependency-free, static explorer for the Higher Airspace Operations (HAO) dataset: vehicle classes, design flight paths, cross-FIR ground tracks, ATS interactions, CNS and equipage requirements, gaps in ICAO provisions, the job cards behind them, GANP/GATMOC alignment, a BFO-conformant ontology and a faceted taxonomy. Modular data build: one file per collection under data/parts/, assembled at load time by js/data-registry.js.",
   "keywords": [
     "icao",
     "higher-airspace-operations",
@@ -19,13 +19,13 @@
   "license": "MIT",
   "private": true,
   "type": "module",
-  "homepage": "https://github.com/your-org/hao-navigator-shared#readme",
+  "homepage": "https://github.com/your-org/hao-navigator-modular#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/your-org/hao-navigator-shared.git"
+    "url": "git+https://github.com/your-org/hao-navigator-modular.git"
   },
   "bugs": {
-    "url": "https://github.com/your-org/hao-navigator-shared/issues"
+    "url": "https://github.com/your-org/hao-navigator-modular/issues"
   },
   "main": "index.html",
   "files": [
@@ -34,6 +34,7 @@
     "js/",
     "data/",
     "schemas/",
+    "tools/",
     "tests/",
     "README.md",
     "SECURITY.md"
@@ -41,8 +42,11 @@
   "scripts": {
     "start": "npx --yes serve .",
     "serve": "npx --yes http-server . -p 8080 -c-1",
-    "check": "node --check js/sanitize.js && node --check js/app.js && node --check js/flightpath.js && node --check js/planview.js && node --check js/roadmap.js && node --check js/heatmap.js && node --check js/ontology.js",
-    "test:helpers": "node tests/sanitize.helpers.test.mjs"
+    "check": "node --check js/sanitize.js && node --check js/data-registry.js && node --check js/app.js && node --check js/flightpath.js && node --check js/planview.js && node --check js/roadmap.js && node --check js/heatmap.js && node --check js/ontology.js",
+    "check:data": "node -e \"const{readdirSync}=require('fs');const{execFileSync}=require('child_process');readdirSync('data/parts').filter(f=>f.endsWith('.js')).forEach(f=>execFileSync(process.execPath,['--check','data/parts/'+f]));console.log('all data parts parse')\"",
+    "validate": "node tools/validate-parts.mjs",
+    "test:roundtrip": "node tests/roundtrip.test.mjs",
+    "test": "npm run check && npm run check:data && npm run validate && npm run test:roundtrip"
   },
   "engines": {
     "node": ">=16"

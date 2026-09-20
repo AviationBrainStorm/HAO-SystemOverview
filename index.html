@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>HAO Navigator — Higher Airspace Operations knowledge explorer (shared build)</title>
+<title>HAO Navigator — Higher Airspace Operations knowledge explorer (modular data build)</title>
 <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
@@ -249,7 +249,47 @@
 
 <div id="toast" class="toast" hidden></div>
 
-<script src="data/embedded-data.js"></script>
+<!-- 1. registry first: it defines HAO_DATA.register() and the lazy window.HAO_SEED -->
+<script src="js/data-registry.js"></script>
+
+<!-- 2. dataset parts - one collection per file, load order sets array order -->
+<script src="data/parts/meta.js"></script>
+<script src="data/parts/reference-airspace.js"></script>
+<script src="data/parts/vehicle-classes.js"></script>
+<script src="data/parts/flight-phases.js"></script>
+<script src="data/parts/use-cases.js"></script>
+<script src="data/parts/service-catalogue.js"></script>
+<script src="data/parts/gatmoc-components.js"></script>
+<script src="data/parts/guiding-principles.js"></script>
+<script src="data/parts/kpas.js"></script>
+<script src="data/parts/atm-community.js"></script>
+<script src="data/parts/ganp-layers.js"></script>
+<script src="data/parts/ganp-bbb.js"></script>
+<script src="data/parts/ganp-asbu-threads.js"></script>
+<script src="data/parts/expert-groups.js"></script>
+<script src="data/parts/provision-gaps.js"></script>
+<script src="data/parts/job-cards.js"></script>
+<script src="data/parts/fir-regions.js"></script>
+<script src="data/parts/scenarios-lta-balloon.js"></script>
+<script src="data/parts/scenarios-lta-airship.js"></script>
+<script src="data/parts/scenarios-hta-haps.js"></script>
+<script src="data/parts/scenarios-supersonic.js"></script>
+<script src="data/parts/scenarios-mixed-regime.js"></script>
+
+<!-- 3. ontology parts -->
+<script src="data/parts/ontology-meta.js"></script>
+<script src="data/parts/ontology-bfo-backbone.js"></script>
+<script src="data/parts/ontology-relations.js"></script>
+<script src="data/parts/ontology-classes.js"></script>
+<script src="data/parts/ontology-axioms.js"></script>
+<script src="data/parts/ontology-notes.js"></script>
+
+<!-- 4. taxonomy parts -->
+<script src="data/parts/taxonomy-meta.js"></script>
+<script src="data/parts/taxonomy-facets.js"></script>
+<script src="data/parts/taxonomy-examples.js"></script>
+
+<!-- 5. static geometry and the renderers -->
 <script src="data/worldmap.js"></script>
 <script src="js/sanitize.js"></script>
 <script src="js/flightpath.js"></script>

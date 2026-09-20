@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://icao.int/hao/schemas/parts/fir-regions.schema.json",
+  "title": "FIR and sovereign regions",
+  "description": "Schematic FIR / sovereign region boxes for the plan view. Not for navigation.",
+  "$comment": "Governs the `payload` of a data part. The part file itself is validated against hao-part.schema.json.",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": [
+      "id",
+      "name",
+      "type",
+      "bbox"
+    ],
+    "properties": {
+      "id": {
+        "type": "string",
+        "pattern": "^FIR-[A-Z0-9]+$"
+      },
+      "name": {
+        "type": "string"
+      },
+      "type": {
+        "type": "string",
+        "enum": [
+          "sovereign",
+          "oceanic",
+          "highSeas"
+        ]
+      },
+      "bbox": {
+        "type": "array",
+        "items": {
+          "type": "number"
+        },
+        "minItems": 4,
+        "maxItems": 4,
+        "description": "[lonMin, latMin, lonMax, latMax] in WGS84 degrees."
+      },
+      "note": {
+        "type": "string"
+      }
+    }
+  }
+}

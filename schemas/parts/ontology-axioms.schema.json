@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://icao.int/hao/schemas/parts/ontology-axioms.schema.json",
+  "title": "HAO ontology axioms",
+  "description": "Subject / relation / object assertions. Mounts at ontology.axioms.",
+  "$comment": "Governs the `payload` of a data part. The part file itself is validated against hao-part.schema.json.",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": [
+      "subject",
+      "relation",
+      "object"
+    ],
+    "properties": {
+      "subject": {
+        "type": "string"
+      },
+      "relation": {
+        "type": "string",
+        "pattern": "^rel:"
+      },
+      "object": {
+        "type": "string"
+      },
+      "note": {
+        "type": "string"
+      }
+    }
+  }
+}

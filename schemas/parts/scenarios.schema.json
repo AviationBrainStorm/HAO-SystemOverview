@@ -1,0 +1,381 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://icao.int/hao/schemas/parts/scenarios.schema.json",
+  "title": "HAO scenarios",
+  "description": "Scenarios. Several files may mount here; the registry concatenates them in script order, so ids must be unique across all scenario parts. Mounts at dataset.scenarios.",
+  "$comment": "Governs the `payload` of a data part. The part file itself is validated against hao-part.schema.json.",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": [
+      "id",
+      "vehicleClassId",
+      "phaseId",
+      "name",
+      "trajectory"
+    ],
+    "properties": {
+      "id": {
+        "type": "string",
+        "pattern": "^SC-[A-Z0-9-]+$"
+      },
+      "vehicleClassId": {
+        "type": "string"
+      },
+      "phaseId": {
+        "type": "string"
+      },
+      "name": {
+        "type": "string"
+      },
+      "narrative": {
+        "type": "string"
+      },
+      "useCases": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "altitudeBandFt": {
+        "type": "array",
+        "items": {
+          "type": "number"
+        },
+        "minItems": 2,
+        "maxItems": 2
+      },
+      "trajectory": {
+        "type": "array",
+        "minItems": 2,
+        "description": "Ordered design flight path samples. t is normalised 0-1 along the scenario, altFt is pressure altitude in feet.",
+        "items": {
+          "type": "object",
+          "required": [
+            "t",
+            "altFt"
+          ],
+          "properties": {
+            "t": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "altFt": {
+              "type": "number",
+              "minimum": 0
+            },
+            "label": {
+              "type": "string"
+            },
+            "note": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "otherTraffic": {
+        "type": "array",
+        "description": "Traffic the design path intersects or passes. Bands are altitude layers; crossings are point encounters.",
+        "items": {
+          "type": "object",
+          "required": [
+            "type",
+            "label"
+          ],
+          "oneOf": [
+            {
+              "properties": {
+                "type": {
+                  "const": "band"
+                }
+              },
+              "required": [
+                "fromFt",
+                "toFt"
+              ]
+            },
+            {
+              "properties": {
+                "type": {
+                  "const": "crossing"
+                }
+              },
+              "required": [
+                "atT",
+                "altFt"
+              ]
+            }
+          ],
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "band",
+                "crossing"
+              ]
+            },
+            "label": {
+              "type": "string"
+            },
+            "fromFt": {
+              "type": "number"
+            },
+            "toFt": {
+              "type": "number"
+            },
+            "atT": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "altFt": {
+              "type": "number"
+            },
+            "density": {
+              "type": "string",
+              "enum": [
+                "low",
+                "medium",
+                "high"
+              ]
+            },
+            "conflictRisk": {
+              "type": "string",
+              "enum": [
+                "low",
+                "medium",
+                "high"
+              ]
+            }
+          }
+        }
+      },
+      "atsInteraction": {
+        "type": "object",
+        "required": [
+          "mode"
+        ],
+        "properties": {
+          "mode": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "responsibilities": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "services": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Service catalogue ids."
+      },
+      "cns": {
+        "type": "object",
+        "required": [
+          "communication",
+          "navigation",
+          "surveillance"
+        ],
+        "properties": {
+          "communication": {
+            "type": "string"
+          },
+          "navigation": {
+            "type": "string"
+          },
+          "surveillance": {
+            "type": "string"
+          }
+        }
+      },
+      "equipage": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "informationRequirements": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "provisionGaps": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Provision gap ids."
+      },
+      "mapping": {
+        "type": "object",
+        "properties": {
+          "gatmocComponents": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "kpas": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "guidingPrinciples": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "ganpLayers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "asbuThreads": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "bbb": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "expertGroupDependency": {
+        "type": "object",
+        "description": "Map of expert group id to dependency level 0-5. Drives the heat map.",
+        "additionalProperties": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 5
+        }
+      },
+      "groundTrack": {
+        "type": "object",
+        "description": "Geographic ground track for the plan view.",
+        "required": [
+          "waypoints"
+        ],
+        "properties": {
+          "waypoints": {
+            "type": "array",
+            "minItems": 2,
+            "items": {
+              "type": "object",
+              "required": [
+                "lat",
+                "lon",
+                "altFt"
+              ],
+              "properties": {
+                "lat": {
+                  "type": "number",
+                  "minimum": -90,
+                  "maximum": 90
+                },
+                "lon": {
+                  "type": "number",
+                  "minimum": -180,
+                  "maximum": 180
+                },
+                "altFt": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "label": {
+                  "type": "string"
+                },
+                "note": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "firCrossings": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "atIndex",
+                "from",
+                "to"
+              ],
+              "properties": {
+                "atIndex": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "description": "Index into waypoints."
+                },
+                "from": {
+                  "type": "string"
+                },
+                "to": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "sovereign",
+                    "oceanic",
+                    "toHighSeas",
+                    "regimeChange",
+                    "internal"
+                  ]
+                },
+                "note": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "stationArea": {
+            "type": "object",
+            "required": [
+              "lat",
+              "lon",
+              "radiusKm"
+            ],
+            "properties": {
+              "lat": {
+                "type": "number"
+              },
+              "lon": {
+                "type": "number"
+              },
+              "radiusKm": {
+                "type": "number",
+                "minimum": 0
+              }
+            }
+          },
+          "uncertaintyGrowth": {
+            "type": "boolean",
+            "description": "Render a widening uncertainty cone (loss of telemetry)."
+          },
+          "dueRegard": {
+            "type": "boolean"
+          },
+          "note": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

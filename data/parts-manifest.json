@@ -1,0 +1,315 @@
+{
+  "generated": "tools/split_build.py",
+  "parts": [
+    {
+      "file": "data/parts/meta.js",
+      "part": "meta",
+      "root": "dataset",
+      "mount": "meta",
+      "schema": "schemas/parts/meta.schema.json",
+      "items": null,
+      "bytes": 2469,
+      "note": "Dataset identity, scope note, holistic vision and provenance."
+    },
+    {
+      "file": "data/parts/reference-airspace.js",
+      "part": "reference-airspace",
+      "root": "dataset",
+      "mount": "referenceAirspace",
+      "schema": "schemas/parts/reference-airspace.schema.json",
+      "items": null,
+      "bytes": 2539,
+      "note": "Altitude bands used as the vertical backdrop, plus the altimetry constraint note."
+    },
+    {
+      "file": "data/parts/vehicle-classes.js",
+      "part": "vehicle-classes",
+      "root": "dataset",
+      "mount": "vehicleClasses",
+      "schema": "schemas/parts/vehicle-classes.schema.json",
+      "items": 4,
+      "bytes": 4633,
+      "note": "One record per vehicle class. Add a class here and it appears in every view."
+    },
+    {
+      "file": "data/parts/flight-phases.js",
+      "part": "flight-phases",
+      "root": "dataset",
+      "mount": "flightPhases",
+      "schema": "schemas/parts/flight-phases.schema.json",
+      "items": 7,
+      "bytes": 1217,
+      "note": "Ordered design phases."
+    },
+    {
+      "file": "data/parts/use-cases.js",
+      "part": "use-cases",
+      "root": "dataset",
+      "mount": "useCases",
+      "schema": "schemas/parts/use-cases.schema.json",
+      "items": 7,
+      "bytes": 2297,
+      "note": "Socio-economic purposes an operation can serve."
+    },
+    {
+      "file": "data/parts/service-catalogue.js",
+      "part": "service-catalogue",
+      "root": "dataset",
+      "mount": "serviceCatalogue",
+      "schema": "schemas/parts/service-catalogue.schema.json",
+      "items": 12,
+      "bytes": 2102,
+      "note": "Services a scenario may consume, each mapped to a GATMOC component."
+    },
+    {
+      "file": "data/parts/gatmoc-components.js",
+      "part": "gatmoc-components",
+      "root": "dataset",
+      "mount": "gatmoc.components",
+      "schema": "schemas/parts/gatmoc-components.schema.json",
+      "items": 8,
+      "bytes": 1126,
+      "note": "Doc 9854 concept components."
+    },
+    {
+      "file": "data/parts/guiding-principles.js",
+      "part": "guiding-principles",
+      "root": "dataset",
+      "mount": "gatmoc.guidingPrinciples",
+      "schema": "schemas/parts/guiding-principles.schema.json",
+      "items": 7,
+      "bytes": 1184,
+      "note": "GATMOC guiding principles."
+    },
+    {
+      "file": "data/parts/kpas.js",
+      "part": "kpas",
+      "root": "dataset",
+      "mount": "gatmoc.kpas",
+      "schema": "schemas/parts/kpas.schema.json",
+      "items": 11,
+      "bytes": 1257,
+      "note": "Key performance areas inherited from the GANP."
+    },
+    {
+      "file": "data/parts/atm-community.js",
+      "part": "atm-community",
+      "root": "dataset",
+      "mount": "gatmoc.atmCommunity",
+      "schema": "schemas/parts/atm-community.schema.json",
+      "items": 7,
+      "bytes": 787,
+      "note": "GATMOC ATM community categories. HAO stakeholders map into these rather than adding new ones."
+    },
+    {
+      "file": "data/parts/ganp-layers.js",
+      "part": "ganp-layers",
+      "root": "dataset",
+      "mount": "ganp.layers",
+      "schema": "schemas/parts/ganp-layers.schema.json",
+      "items": 4,
+      "bytes": 1108,
+      "note": "The four GANP layers."
+    },
+    {
+      "file": "data/parts/ganp-bbb.js",
+      "part": "ganp-bbb",
+      "root": "dataset",
+      "mount": "ganp.bbb",
+      "schema": "schemas/parts/ganp-bbb.schema.json",
+      "items": 6,
+      "bytes": 915,
+      "note": "Basic Building Blocks."
+    },
+    {
+      "file": "data/parts/ganp-asbu-threads.js",
+      "part": "ganp-asbu-threads",
+      "root": "dataset",
+      "mount": "ganp.asbuThreads",
+      "schema": "schemas/parts/ganp-asbu-threads.schema.json",
+      "items": 10,
+      "bytes": 1501,
+      "note": "ASBU threads."
+    },
+    {
+      "file": "data/parts/expert-groups.js",
+      "part": "expert-groups",
+      "root": "dataset",
+      "mount": "expertGroups",
+      "schema": "schemas/parts/expert-groups.schema.json",
+      "items": 18,
+      "bytes": 4878,
+      "note": "ICAO expert groups. Ids here are the keys used by scenario expertGroupDependency maps."
+    },
+    {
+      "file": "data/parts/provision-gaps.js",
+      "part": "provision-gaps",
+      "root": "dataset",
+      "mount": "provisionGaps",
+      "schema": "schemas/parts/provision-gaps.schema.json",
+      "items": 20,
+      "bytes": 18210,
+      "note": "The gap register."
+    },
+    {
+      "file": "data/parts/job-cards.js",
+      "part": "job-cards",
+      "root": "dataset",
+      "mount": "jobCards",
+      "schema": "schemas/parts/job-cards.schema.json",
+      "items": 9,
+      "bytes": 21302,
+      "note": "ICAO work programme job cards and the gaps they address."
+    },
+    {
+      "file": "data/parts/fir-regions.js",
+      "part": "fir-regions",
+      "root": "dataset",
+      "mount": "firRegions",
+      "schema": "schemas/parts/fir-regions.schema.json",
+      "items": 18,
+      "bytes": 4099,
+      "note": "Schematic FIR / sovereign region boxes for the plan view. Not for navigation."
+    },
+    {
+      "file": "data/parts/scenarios-lta-balloon.js",
+      "part": "scenarios-lta-balloon",
+      "root": "dataset",
+      "mount": "scenarios",
+      "schema": "schemas/parts/scenarios.schema.json",
+      "items": 6,
+      "bytes": 47186,
+      "note": "LTA balloon scenarios."
+    },
+    {
+      "file": "data/parts/scenarios-lta-airship.js",
+      "part": "scenarios-lta-airship",
+      "root": "dataset",
+      "mount": "scenarios",
+      "schema": "schemas/parts/scenarios.schema.json",
+      "items": 2,
+      "bytes": 14209,
+      "note": "Powered stratospheric airship scenarios."
+    },
+    {
+      "file": "data/parts/scenarios-hta-haps.js",
+      "part": "scenarios-hta-haps",
+      "root": "dataset",
+      "mount": "scenarios",
+      "schema": "schemas/parts/scenarios.schema.json",
+      "items": 4,
+      "bytes": 28172,
+      "note": "Solar fixed-wing HAPS scenarios."
+    },
+    {
+      "file": "data/parts/scenarios-supersonic.js",
+      "part": "scenarios-supersonic",
+      "root": "dataset",
+      "mount": "scenarios",
+      "schema": "schemas/parts/scenarios.schema.json",
+      "items": 3,
+      "bytes": 21364,
+      "note": "Supersonic transport scenarios."
+    },
+    {
+      "file": "data/parts/scenarios-mixed-regime.js",
+      "part": "scenarios-mixed-regime",
+      "root": "dataset",
+      "mount": "scenarios",
+      "schema": "schemas/parts/scenarios.schema.json",
+      "items": 2,
+      "bytes": 14848,
+      "note": "Mixed-regime and due-regard scenarios that span two traffic management philosophies."
+    },
+    {
+      "file": "data/parts/ontology-meta.js",
+      "part": "ontology-meta",
+      "root": "ontology",
+      "mount": "meta",
+      "schema": "schemas/parts/ontology-meta.schema.json",
+      "items": null,
+      "bytes": 1310,
+      "note": "Ontology identity and upper-ontology declaration."
+    },
+    {
+      "file": "data/parts/ontology-bfo-backbone.js",
+      "part": "ontology-bfo-backbone",
+      "root": "ontology",
+      "mount": "bfoBackbone",
+      "schema": "schemas/parts/ontology-bfo-backbone.schema.json",
+      "items": 21,
+      "bytes": 3069,
+      "note": "The BFO classes the domain specialises."
+    },
+    {
+      "file": "data/parts/ontology-relations.js",
+      "part": "ontology-relations",
+      "root": "ontology",
+      "mount": "relations",
+      "schema": "schemas/parts/ontology-relations.schema.json",
+      "items": 18,
+      "bytes": 3587,
+      "note": "Relations with domain, range and inverse."
+    },
+    {
+      "file": "data/parts/ontology-classes.js",
+      "part": "ontology-classes",
+      "root": "ontology",
+      "mount": "classes",
+      "schema": "schemas/parts/ontology-classes.schema.json",
+      "items": 71,
+      "bytes": 16656,
+      "note": "Domain classes; each declares exactly one BFO class."
+    },
+    {
+      "file": "data/parts/ontology-axioms.js",
+      "part": "ontology-axioms",
+      "root": "ontology",
+      "mount": "axioms",
+      "schema": "schemas/parts/ontology-axioms.schema.json",
+      "items": 35,
+      "bytes": 5104,
+      "note": "Subject / relation / object assertions."
+    },
+    {
+      "file": "data/parts/ontology-notes.js",
+      "part": "ontology-notes",
+      "root": "ontology",
+      "mount": "modellingNotes",
+      "schema": "schemas/parts/ontology-notes.schema.json",
+      "items": 5,
+      "bytes": 1625,
+      "note": "Modelling decisions worth stating explicitly."
+    },
+    {
+      "file": "data/parts/taxonomy-meta.js",
+      "part": "taxonomy-meta",
+      "root": "taxonomy",
+      "mount": "meta",
+      "schema": "schemas/parts/taxonomy-meta.schema.json",
+      "items": null,
+      "bytes": 1166,
+      "note": "Taxonomy identity, structure rationale and scope exclusion."
+    },
+    {
+      "file": "data/parts/taxonomy-facets.js",
+      "part": "taxonomy-facets",
+      "root": "taxonomy",
+      "mount": "facets",
+      "schema": "schemas/parts/taxonomy-facets.schema.json",
+      "items": 9,
+      "bytes": 10166,
+      "note": "The orthogonal facets. Add a facet here without touching any other file."
+    },
+    {
+      "file": "data/parts/taxonomy-examples.js",
+      "part": "taxonomy-examples",
+      "root": "taxonomy",
+      "mount": "workedExamples",
+      "schema": "schemas/parts/taxonomy-examples.schema.json",
+      "items": 4,
+      "bytes": 2144,
+      "note": "Worked codings of real operations."
+    }
+  ]
+}

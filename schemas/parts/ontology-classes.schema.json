@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://icao.int/hao/schemas/parts/ontology-classes.schema.json",
+  "title": "HAO ontology classes",
+  "description": "Domain classes. Each declares exactly one BFO class; several files may mount here and are concatenated. Mounts at ontology.classes.",
+  "$comment": "Governs the `payload` of a data part. The part file itself is validated against hao-part.schema.json.",
+  "type": "array",
+  "minItems": 1,
+  "items": {
+    "type": "object",
+    "required": [
+      "id",
+      "label",
+      "bfo"
+    ],
+    "properties": {
+      "id": {
+        "type": "string",
+        "pattern": "^hao:"
+      },
+      "label": {
+        "type": "string"
+      },
+      "bfo": {
+        "type": "string",
+        "description": "The BFO class this domain class specialises. Exactly one.",
+        "enum": [
+          "bfo:Entity",
+          "bfo:Continuant",
+          "bfo:Occurrent",
+          "bfo:IndependentContinuant",
+          "bfo:MaterialEntity",
+          "bfo:Object",
+          "bfo:ObjectAggregate",
+          "bfo:ImmaterialEntity",
+          "bfo:SiteBFO",
+          "bfo:SpatialRegion",
+          "bfo:SpecificallyDependentContinuant",
+          "bfo:Quality",
+          "bfo:RealizableEntity",
+          "bfo:Role",
+          "bfo:Disposition",
+          "bfo:Function",
+          "bfo:GenericallyDependentContinuant",
+          "bfo:Process",
+          "bfo:ProcessBoundary",
+          "bfo:TemporalRegion",
+          "bfo:SpatiotemporalRegion"
+        ]
+      },
+      "parent": {
+        "type": "string",
+        "description": "Optional domain-level superclass. Must itself be a hao: class with a compatible bfo value."
+      },
+      "definition": {
+        "type": "string"
+      },
+      "examples": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

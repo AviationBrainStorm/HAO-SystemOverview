@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://icao.int/hao/schemas/parts/meta.schema.json",
+  "title": "HAO dataset meta",
+  "description": "Identity, scope and provenance of the dataset. Mounts at dataset.meta.",
+  "$comment": "Governs the `payload` of a data part. The part file itself is validated against hao-part.schema.json.",
+  "type": "object",
+  "required": [
+    "datasetId",
+    "title",
+    "version"
+  ],
+  "properties": {
+    "datasetId": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "issued": {
+      "type": "string",
+      "format": "date"
+    },
+    "scopeNote": {
+      "type": "string"
+    },
+    "holisticVision": {
+      "type": "string"
+    },
+    "provenance": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

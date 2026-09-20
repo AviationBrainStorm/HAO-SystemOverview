@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://icao.int/hao/schemas/parts/taxonomy-meta.schema.json",
+  "title": "HAO taxonomy meta",
+  "description": "Taxonomy identity, structure rationale and scope exclusion. Mounts at taxonomy.meta.",
+  "$comment": "Governs the `payload` of a data part. The part file itself is validated against hao-part.schema.json.",
+  "type": "object",
+  "required": [
+    "taxonomyId",
+    "title",
+    "version"
+  ],
+  "properties": {
+    "taxonomyId": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "structure": {
+      "type": "string"
+    },
+    "scopeExclusion": {
+      "type": "string"
+    }
+  }
+}

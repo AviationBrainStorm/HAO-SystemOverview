@@ -80,3 +80,32 @@ header at the web server or SharePoint layer instead.
 This is a prototype for discussion, not an ICAO position. Please report any
 suspected security issue to the maintainer rather than opening a public
 issue.
+
+
+## Note on the modular data layout
+
+The data now loads as 31 separate `<script>` files under `data/parts/`
+rather than one generated bundle. This does not change the security
+posture:
+
+- The parts are plain data. Each calls `HAO_DATA.register()` with an
+  object literal and does nothing else. They execute no logic, fetch
+  nothing and touch no DOM.
+- `js/data-registry.js` merges payloads and walks dot paths. It never
+  renders. Every value still reaches the screen through
+  `HAOSafe.setHTML()`, so the sanitising sink described above remains the
+  single point at which data becomes markup.
+- Loading data as scripts rather than JSON is a deliberate trade for the
+  `file://` workflow. It means a part file is executable code, so the
+  usual rule applies with slightly more force than before: **treat a
+  third-party data part exactly as you would treat third-party code.**
+  Review it, or convert it to JSON and load it through a build step, if
+  it did not come from someone you trust.
+- `npm run validate` and `HAO_DATA.report()` will tell you if a part
+  failed to load or if a reference dangles. Neither is a security
+  control, but a part that silently vanished is the most likely way this
+  layout goes wrong.
+
+A Content-Security-Policy of `script-src 'self'` covers the part files
+without modification, since they are same-origin files like any other
+script in the build.

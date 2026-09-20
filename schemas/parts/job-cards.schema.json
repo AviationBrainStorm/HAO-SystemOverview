@@ -1,0 +1,174 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://icao.int/hao/schemas/parts/job-cards.schema.json",
+  "title": "ICAO job cards",
+  "description": "Work programme job cards using the Delivery / Effective / Applicability triple. Mounts at dataset.jobCards.",
+  "$comment": "Governs the `payload` of a data part. The part file itself is validated against hao-part.schema.json.",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": [
+      "id",
+      "title",
+      "primaryGroup",
+      "status",
+      "workProgrammeElements"
+    ],
+    "properties": {
+      "id": {
+        "type": "string",
+        "description": "ICAO job card reference, e.g. SASP.019.01. Use a placeholder plus idProvisional when unassigned."
+      },
+      "idProvisional": {
+        "type": "boolean",
+        "description": "True when the ANC has not yet assigned a reference number."
+      },
+      "title": {
+        "type": "string"
+      },
+      "primaryGroup": {
+        "type": "string",
+        "description": "Expert group id."
+      },
+      "supportingGroups": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "status": {
+        "type": "string",
+        "enum": [
+          "Draft",
+          "Proposed",
+          "Approved",
+          "On-schedule",
+          "Re-scheduled",
+          "Delivered",
+          "Completed",
+          "Cancelled",
+          "Superseded"
+        ]
+      },
+      "priority": {
+        "type": "string",
+        "enum": [
+          "High",
+          "Medium",
+          "Low"
+        ]
+      },
+      "source": {
+        "type": "string"
+      },
+      "problemStatement": {
+        "type": "string"
+      },
+      "ganpGaspLink": {
+        "type": "string"
+      },
+      "proposedMetric": {
+        "type": "string"
+      },
+      "interdependencies": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "expectedBenefits": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "references": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "secretariatCoordinator": {
+        "type": "string"
+      },
+      "notes": {
+        "type": "string"
+      },
+      "workProgrammeElements": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "type": "object",
+          "required": [
+            "wpe",
+            "description",
+            "status"
+          ],
+          "properties": {
+            "wpe": {
+              "type": "string",
+              "description": "Work programme element number or code."
+            },
+            "documentAffected": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "supportingGroups": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "Proposed",
+                "On-schedule",
+                "Re-scheduled",
+                "Delivered",
+                "Completed",
+                "Cancelled"
+              ]
+            },
+            "delivery": {
+              "type": "string",
+              "description": "ICAO date form: 'Q2 2028', 'Nov 2028', 'Dec 2025' or '2028'."
+            },
+            "effective": {
+              "type": "string"
+            },
+            "applicability": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "addressesGaps": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "gapId",
+            "coverage"
+          ],
+          "properties": {
+            "gapId": {
+              "type": "string"
+            },
+            "coverage": {
+              "type": "string",
+              "enum": [
+                "resolving",
+                "partial",
+                "framing"
+              ],
+              "description": "resolving = output changes the provision; partial = work exists but does not span the gap; framing = scoped conceptually only."
+            }
+          }
+        }
+      }
+    }
+  }
+}
